@@ -26,6 +26,7 @@
         program = (pkgs.writeScriptBin "update-repo-inputs.sh" ''
           #!${pkgs.stdenv.shell}
           set -e
+          [[ ! -f flake.nix ]] && exit 0
           params=$(${nix_bin} flake list-inputs --json | ${jq_bin} -r '${jq_input_with_repo}')
           ${nix_bin} flake update $params --commit-lock-file
         '') + /bin/update-repo-inputs.sh;
